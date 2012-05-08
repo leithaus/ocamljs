@@ -362,7 +362,7 @@ let rec comp_expr tail expr =
 
     | Lprim (p, args) -> comp_prim p (List.map (comp_expr false) args)
 
-    | Lsend (Public, Lconst(Const_immstring m), o, args) ->
+    | Lsend (Public, Lconst(Const_immstring m), o, args, _) ->
         (*
           XXX
           an OCaml-defined object should not get the special method
@@ -403,7 +403,7 @@ let rec comp_expr tail expr =
             | _ -> raise (Failure "bad method call")
         end
 
-    | Lsend (Public, m, o, args) ->
+    | Lsend (Public, m, o, args, _) ->
         (*
           I think this case (where we do not know the method name at
           the call site) only comes up in the compilation of
@@ -425,7 +425,7 @@ let rec comp_expr tail expr =
                 >>
         end
 
-    | Lsend (Self, m, o, args) ->
+    | Lsend (Self, m, o, args, _) ->
         let inh =
           match m with
             | Lvar id ->
